@@ -2,6 +2,7 @@ import prisma from "../lib/prisma.js";
 import { hashPassword } from "../utils/hashPassword.js";
 import { verifyPassword } from "../utils/verifyPassword.js";
 import { createJWT } from "../utils/createJWT.js";
+import AppError from "../utils/appError.js";
 
 const authController = {
     createUser: async (req, res) => {
@@ -29,10 +30,7 @@ const authController = {
                 token
             }).status(201)
         } catch (error) {
-            res.locals.status = 500;
-            res.locals.user = error.message;
-
-            return res.json(error.message).status(500)
+            next(error)
         }
     },
 
@@ -46,9 +44,9 @@ const authController = {
                 },
             })
 
-            if (!user) throw new Error("Bad Request")
+            if (!user) throw new AppError('Wrong username or password', 401)
             const verified = await verifyPassword(password, user.passwordHash)
-            if (!verified) throw new Error("Bad Request")
+            if (!verified) throw new AppError('Wrong username or password', 401)
 
             const token = createJWT(user.email, user.username, user.id)
 
@@ -61,7 +59,7 @@ const authController = {
                 token
             }).status(200)
         } catch (error){
-            return res.json(error.message).status(400)
+            next(error)
         }
     }
     

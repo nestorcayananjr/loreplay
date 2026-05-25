@@ -11,7 +11,7 @@ const playthroughController = {
 
             res.json(playthroughs).status(200)
         } catch (error) {
-            res.json(error.message).status(400)
+            next(error)
         }
     },
     createPlaythrough: async (req, res) => {
@@ -42,7 +42,7 @@ const playthroughController = {
 
             res.status(201).json(playthrough)
         } catch (error) {
-            res.status(400).json(error.message)
+            next(error)
         }
     }
 }

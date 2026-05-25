@@ -3,6 +3,7 @@ import express from 'express'
 import morgan from 'morgan'
 import authRouter from './src/routers/authRouter.js';
 import playthroughRouter from './src/routers/playthroughRouter.js';
+import errorHandler from './src/middleware/errorHandler.js';
 
 
 const app = express();
@@ -16,6 +17,8 @@ app.get('/health', (req, res) => {
 
 app.use('/api/auth', authRouter)
 app.use('/api/playthroughs', playthroughRouter)
+
+app.use(errorHandler)
 
 app.listen(3000, () => {
     console.log('Server running on port 3000')
