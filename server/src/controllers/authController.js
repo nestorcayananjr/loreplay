@@ -5,7 +5,7 @@ import { createJWT } from "../utils/createJWT.js";
 import AppError from "../utils/appError.js";
 
 const authController = {
-    createUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
             const { email, username, password } = req.body;
             const hashedPassword = await hashPassword(password);
@@ -34,9 +34,10 @@ const authController = {
         }
     },
 
-    verifyUser: async (req, res) => {
+    verifyUser: async (req, res, next) => {
         try {
             const { username, password } = req.body;
+            console.log(username, password)
             
             const user = await prisma.user.findFirst({
                 where: {

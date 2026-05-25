@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma.js";
 
 const playthroughController = {
-    getAllPlaythroughs: async (req, res) => {
+    getAllPlaythroughs: async (req, res, next) => {
         try {
             const playthroughs = await prisma.playthrough.findMany({
                 where: {
@@ -14,7 +14,7 @@ const playthroughController = {
             next(error)
         }
     },
-    createPlaythrough: async (req, res) => {
+    createPlaythrough: async (req, res, next) => {
         try {
             const { game, playDate, location, notes, participants } = req.body;
             const userId = req.user.userId;

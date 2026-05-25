@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "dev:docker": "nodemon index.js"
+    "dev": "tsx index.ts",
+    "dev:docker": "tsx watch index.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +23,15 @@
     "morgan": "^1.10.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^25.9.1",
     "nodemon": "^3.1.14",
-    "prisma": "^7.7.0"
+    "prisma": "^7.7.0",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
   }
 }
