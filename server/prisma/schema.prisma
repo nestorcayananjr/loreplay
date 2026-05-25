@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  username      String         @unique
+  passwordHash  String
+  createdAt     DateTime       @default(now())
+  playthroughs  Playthrough[]
+  participations Participant[]
+}
+
+model Playthrough {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  user         User          @relation(fields: [userId], references: [id])
+  game         String
+  playDate     DateTime
+  location     String?
+  notes        String?
+  createdAt    DateTime      @default(now())
+  participants Participant[]
+  photos       Photo[]
+}
+
+model Participant {
+  id            Int         @id @default(autoincrement())
+  playthroughId Int
+  playthrough   Playthrough @relation(fields: [playthroughId], references: [id])
+  userId        Int?
+  user          User?       @relation(fields: [userId], references: [id])
+  name          String
+  score         String?
+  winner        Boolean     @default(false)
+  status        String      @default("confirmed")
+  createdAt     DateTime    @default(now())
+}
+
+model Photo {
+  id            Int         @id @default(autoincrement())
+  playthroughId Int
+  playthrough   Playthrough @relation(fields: [playthroughId], references: [id])
+  url           String
+  caption       String?
+  uploadedAt    DateTime    @default(now())
+}

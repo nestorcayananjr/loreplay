@@ -1,0 +1,48 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: loreplay-dev
+    ports:
+      - '${APP_PORT:-3000}:3000' # API server
+    environment:
+      NODE_ENV: development
+      DOCKER_ENV: 'true'
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: loreplay
+      POSTGRES_USER: nestorcayananjr
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-loreplay_password}'
+      ALLOWED_ORIGINS: '${ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}'
+      DATABASE_URL: 'postgresql://nestorcayananjr:loreplay_password@db:5432/loreplay'
+      JWT_SECRET: '${JWT_SECRET:-secretkey}'
+      BCRYPT_SALT_ROUNDS: 12
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15-alpine
+    container_name: loreplay-db
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: loreplay
+      POSTGRES_USER: nestorcayananjr
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-loreplay_password}'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nestorcayananjr -d loreplay"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    name: loreplay-postgres-data
+    driver: local
+
