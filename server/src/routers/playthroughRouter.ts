@@ -1,16 +1,16 @@
 import { Router } from 'express'
-import playthroughController from '../controllers/playthroughController.js';
-import { authenticate } from '../middleware/authenticate.js'
+import playthroughController from '../controllers/playthroughController';
+import { authenticate } from '../middleware/authenticate';
 
 const playthroughRouter = Router();
 
 // Get all playthroughs for a user
 playthroughRouter.get('/', authenticate, playthroughController.getAllPlaythroughs)
 
-// Get specific playthrough
-playthroughRouter.get('/:id', (req, res) => {
-    res.json('Playthrough received')
-})
+// // Get specific playthrough
+// playthroughRouter.get('/:id', (req, res) => {
+//     res.json('Playthrough received')
+// })
 
 // Create playthrough
 playthroughRouter.post('/', authenticate, playthroughController.createPlaythrough)

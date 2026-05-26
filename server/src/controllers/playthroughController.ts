@@ -1,23 +1,28 @@
 import prisma from "../lib/prisma.js";
+import { Request, Response, NextFunction } from "express";
+
 
 const playthroughController = {
-    getAllPlaythroughs: async (req, res, next) => {
+    getAllPlaythroughs: async (req: Request, res: Response, next: NextFunction) => {
+        console.log('inside')
         try {
             const playthroughs = await prisma.playthrough.findMany({
                 where: {
-                    userId: req.user.userId
+                    userId: req.user.id
                 }
             })
 
-            res.json(playthroughs).status(200)
+            res.status(200).json(playthroughs)
         } catch (error) {
             next(error)
         }
     },
-    createPlaythrough: async (req, res, next) => {
+    createPlaythrough: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { game, playDate, location, notes, participants } = req.body;
-            const userId = req.user.userId;
+            const userId = req.user.id;
+
+            console.log(userId)
 
             const playthrough = await prisma.playthrough.create({
                 data: {
@@ -27,7 +32,7 @@ const playthroughController = {
                     location,
                     notes,
                     participants: {
-                        create: participants.map(p => ({
+                        create: participants.map((p: { name: string; score: string; winner: boolean; userId: number; }) => ({
                             name: p.name,
                             score: p.score,
                             winner: p.winner,
