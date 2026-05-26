@@ -3,25 +3,13 @@ import { hashPassword } from "../utils/hashPassword.js";
 import { verifyPassword } from "../utils/verifyPassword.js";
 import { createJWT } from "../utils/createJWT.js";
 import AppError from "../utils/appError.js";
+import { registerUser, loginUser }  from "../services/authService.ts"
 
 const authController = {
     createUser: async (req, res, next) => {
         try {
             const { email, username, password } = req.body;
-            const hashedPassword = await hashPassword(password);
-
-            const newUser = await prisma.user.create({
-                data: {
-                    email,
-                    username,
-                    passwordHash: hashedPassword
-                },
-                select: {
-                    email: true,
-                    username: true
-                }
-            })
-
+            const newUser = await registerUser(email, username, password)
             const token = createJWT(newUser.email, newUser.username)
 
             return res.json({
@@ -37,18 +25,7 @@ const authController = {
     verifyUser: async (req, res, next) => {
         try {
             const { username, password } = req.body;
-            console.log(username, password)
-            
-            const user = await prisma.user.findFirst({
-                where: {
-                    username
-                },
-            })
-
-            if (!user) throw new AppError('Wrong username or password', 401)
-            const verified = await verifyPassword(password, user.passwordHash)
-            if (!verified) throw new AppError('Wrong username or password', 401)
-
+            const user = await loginUser(username, password)
             const token = createJWT(user.email, user.username, user.id)
 
             return res.json({
