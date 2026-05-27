@@ -1,12 +1,9 @@
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  extensionsToFileExtensions: {
-    ts: 'ts'
-  },
+  moduleFileExtensions: ['js', 'json', 'ts'],
   transform: {
     '^.+\\.ts$': 'ts-jest'
   },
   testMatch: ['**/*.test.ts'],
-  setupFilesAfterFramework: ['./src/tests/setup.ts']
-}
+  setupFilesAfterEnv: ['./src/tests/setup.ts']}

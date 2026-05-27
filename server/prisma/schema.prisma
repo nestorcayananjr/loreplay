@@ -10,6 +10,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+
 }
 
 model User {
@@ -25,7 +27,7 @@ model User {
 model Playthrough {
   id           Int           @id @default(autoincrement())
   userId       Int
-  user         User          @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   game         String
   playDate     DateTime
   location     String?
@@ -40,7 +42,7 @@ model Participant {
   playthroughId Int
   playthrough   Playthrough @relation(fields: [playthroughId], references: [id])
   userId        Int?
-  user          User?       @relation(fields: [userId], references: [id])
+  user          User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   name          String
   score         String?
   winner        Boolean     @default(false)
@@ -51,7 +53,7 @@ model Participant {
 model Photo {
   id            Int         @id @default(autoincrement())
   playthroughId Int
-  playthrough   Playthrough @relation(fields: [playthroughId], references: [id])
+  playthrough   Playthrough @relation(fields: [playthroughId], references: [id], onDelete: Cascade)
   url           String
   caption       String?
   uploadedAt    DateTime    @default(now())

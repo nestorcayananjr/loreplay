@@ -1,5 +1,5 @@
 import { createJWT } from "../utils/createJWT";
-import { registerUser, loginUser }  from "../services/authService.js"
+import { registerUser, loginUser }  from "../services/authService"
 import { Request, Response, NextFunction } from "express";
 
 const authController = {
@@ -9,11 +9,11 @@ const authController = {
             const newUser = await registerUser({email, username, password})
             const token = createJWT(newUser.email, newUser.username, newUser.id)
 
-            return res.json({
+            return res.status(201).json({
                 message: 'User Created Successfully',
                 user: newUser,
                 token
-            }).status(201)
+            })
         } catch (error) {
             next(error)
         }
