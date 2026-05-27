@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from "express";
 import { User } from '@prisma/client';
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  console.log('')
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 
