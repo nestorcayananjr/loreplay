@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import AppError from '../utils/AppError'
-import { addParticipantToPlaythrough } from '../services/participantsService'
+import { addParticipantToPlaythrough, getAllParticipants } from '../services/participantsService'
 
 
 const participantsController = {
@@ -16,7 +16,18 @@ const participantsController = {
         } catch (e) {
             next(e)
         }
+    },
+    getParticipants: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const playthroughId = Number(req.params.id);
+            const participants = await getAllParticipants(playthroughId)
+            res.status(201).json(participants)
+        } catch(e) {
+            next(e)
+        }
     }
 }
+
+
 
 export default participantsController

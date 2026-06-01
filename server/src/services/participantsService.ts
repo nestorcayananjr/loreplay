@@ -1,6 +1,4 @@
-import { Participant } from "@prisma/client";
 import prisma from "../lib/prisma";
-import { getPlaythrough } from "./playthroughService";
 import AppError from "../utils/AppError";
 
 interface ParticipantInput {
@@ -29,4 +27,16 @@ export const addParticipantToPlaythrough = async (data: ParticipantInput) => {
     if (!participant) throw new AppError("Error creating new participant", 500)
 
     return participant;
+}
+
+export const getAllParticipants = async (playthoughId: number) => {
+    const participants = await prisma.participant.findMany({
+        where: {
+            playthroughId: playthoughId
+        }
+    })
+
+    if (!participants) throw new AppError("Error retrieving participants", 500)
+    
+    return participants;
 }
