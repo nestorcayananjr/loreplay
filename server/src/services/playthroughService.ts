@@ -24,6 +24,18 @@ export const getUserPlaythroughs = async (id: number): Promise<Playthrough[]> =>
     return playthroughs
 }
 
+export const getPlaythrough = async (id: number): Promise<Playthrough> => {
+    const playthrough = await prisma.playthrough.findUnique({
+        where: {
+            id: id
+        }
+    })
+
+    if (!playthrough) throw new AppError("Invalid playthrough id", 500)
+
+    return playthrough
+}
+
 export const createNewPlaythrough = async (data: NewPlaythroughInput) => {
     const { game, userId, playDate, location, notes, participants } = data
     const playthrough = await prisma.playthrough.create({

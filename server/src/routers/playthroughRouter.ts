@@ -1,8 +1,11 @@
 import { Router } from 'express'
 import playthroughController from '../controllers/playthroughController';
 import { authenticate } from '../middleware/authenticate';
+import participantsRouter from './participantsRouter';
 
 const playthroughRouter = Router();
+
+playthroughRouter.use('/:id/participants', participantsRouter);
 
 // Get all playthroughs for a user
 playthroughRouter.get('/', authenticate, playthroughController.getAllPlaythroughs)

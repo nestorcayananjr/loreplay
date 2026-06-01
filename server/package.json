@@ -8,6 +8,9 @@
     "dev:docker": "tsx watch src/index.ts",
     "test": "jest --runInBand"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
