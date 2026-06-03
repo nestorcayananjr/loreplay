@@ -17,15 +17,12 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Debug folders
+      - name: Install dependencies
+        working-directory: ./server
         run: |
           pwd
           ls -la
-          ls -la server
-
-      - name: Install dependencies
-        working-directory: ./server
-        run: npm ci
+          npm ci
 
       - name: Run tests
         working-directory: ./server
