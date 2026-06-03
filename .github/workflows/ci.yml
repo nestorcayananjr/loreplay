@@ -16,9 +16,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
+          
       - name: Install dependencies
+        working-directory: ./server
         run: npm ci
 
       - name: Run tests
+        working-directory: ./server
         run: npm test
