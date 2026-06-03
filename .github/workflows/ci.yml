@@ -16,7 +16,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          
+
+      - name: Debug folders
+        run: |
+          pwd
+          ls -la
+          ls -la server
+
       - name: Install dependencies
         working-directory: ./server
         run: npm ci
