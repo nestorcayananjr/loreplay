@@ -19,11 +19,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./server
-        run: |
-          pwd
-          ls -la
-          npm ci
+        run: npm ci
 
       - name: Run tests
         working-directory: ./server
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: npm test
