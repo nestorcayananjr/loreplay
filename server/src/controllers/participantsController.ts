@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import AppError from '../utils/AppError'
-import { addParticipantToPlaythrough, getAllParticipants } from '../services/participantsService'
+import { addParticipantToPlaythrough, getAllParticipants, updateWinner } from '../services/participantsService'
 
 
 const participantsController = {
@@ -23,6 +23,20 @@ const participantsController = {
             const participants = await getAllParticipants(playthroughId)
             res.status(201).json(participants)
         } catch(e) {
+            next(e)
+        }
+    },
+    patchWinner: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const playthroughId = Number(req.params.id);
+            const newWinnerId = Number(req.params.participantId);
+            console.log(req.user)
+            if (!req.user) throw new AppError("Error finding user", 400)
+            const userId = req.user.id
+
+            const updatedWinner = await updateWinner(userId, playthroughId, newWinnerId)
+            res.status(201).json(updatedWinner)
+        } catch (e) {
             next(e)
         }
     }

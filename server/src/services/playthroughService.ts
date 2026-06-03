@@ -16,6 +16,9 @@ export const getUserPlaythroughs = async (id: number): Promise<Playthrough[]> =>
     const playthroughs = await prisma.playthrough.findMany({
         where: {
             userId: id
+        },
+        include: {
+            participants: true
         }
     })
 
