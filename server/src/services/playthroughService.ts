@@ -1,7 +1,6 @@
-import { Playthrough } from "@prisma/client";
+import { Playthrough, Participant } from "@prisma/client";
 import prisma from "../lib/prisma";
 import AppError from "../utils/AppError";
-import { Participant } from "@prisma/client";
 
 interface NewPlaythroughInput {
     game: string,
